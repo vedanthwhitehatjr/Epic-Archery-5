@@ -9,12 +9,16 @@ var palyer, playerBase, playerArcher;
 var computer, computerBase, computerArcher;
 var playerArrows = [];
 var computerArrows = [];
+
+//Declare the varibales to add 3 life for player and computerplayer
+
 var playerArcherLife = 3;
 var computerArcherLife = 3;
 
-
 function preload() {
+  //Load Image of background
   backgroundImg = loadImage("./assets/background.gif");
+
 }
 
 function setup() {
@@ -71,17 +75,20 @@ function draw() {
 
   playerBase.display();
   player.display();
-  player.life();
+  
   playerArcher.display();
   handlePlayerArrowCollision();
 
   for (var i = 0; i < computerArrows.length; i++) {
     showArrows(i, computerArrows);
   }
+  //call Player.life and computerplayer.life
+  player.life();
+  computer.life();
 
   computerBase.display();
   computer.display();
-  computer.life();
+  
   computerArcher.display();
   handleComputerArrowCollision();
 }
@@ -111,18 +118,7 @@ function keyReleased() {
 
 function showArrows(index, arrows) {
   arrows[index].display();
-
-  if (
-    arrows[index].body.position.x > width ||
-    arrows[index].body.position.y > height
-  ) {
-    if (!arrows[index].isRemoved) {
-      arrows[index].remove(index, arrows);
-    } else {
-      arrows[index].trajectory = [];
-    }
-  }
-  
+ 
 }
 
 function handleComputerArcher() {
@@ -178,23 +174,10 @@ function handlePlayerArrowCollision() {
       archerCollision.collided ||
       computerCollision.collided
     ) {
-      computerArcherLife -= 1;
-      computer.reduceLife(computerArcherLife);
-      if (computerArcherLife <= 0) {
-        computerArcher.collapse = true;
-        Matter.Body.setStatic(computerArcher.body, false);
-        Matter.Body.setStatic(computer.body, false);
-        Matter.Body.setPosition(computer.body, {
-          x: width - 100,
-          y: computer.body.position.y
-        });
-      }
+      console.log("Player Arrow Collided")
     }
   }
-    }
-  
-
-
+}
 
 function handleComputerArrowCollision() {
   for (var i = 0; i < computerArrows.length; i++) {
@@ -217,20 +200,9 @@ function handleComputerArrowCollision() {
       baseCollision.collided ||
       archerCollision.collided ||
       playerCollision.collided
-    ) {
-      playerArcherLife -= 1;
-      player.reduceLife(playerArcherLife);
-      if (playerArcherLife <= 0) {
-        playerArcher.collapse = true;
-        Matter.Body.setStatic(playerArcher.body, false);
-        Matter.Body.setStatic(player.body, false);
-        Matter.Body.setPosition(player.body, {
-          x: 100,
-          y: player.body.position.y
-        });
-      }
+    )
+    {
+      console.log("Computer Arrow Collided")
     }
   }
-    }
-  
-
+}
